@@ -8,7 +8,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('API funcionando!');
 });
+const cors = require('cors');
 
+app.use(cors());
 app.use(clienteRoutes);
 
 const PORT = 3000;

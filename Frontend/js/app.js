@@ -90,11 +90,18 @@ form.addEventListener('submit', async (event) => {
 });
 
 async function excluirCliente(id) {
-    await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-    });
 
-    listarClientes();
+  const confirmar = confirm("Tem certeza que deseja excluir este cliente?");
+
+  if (!confirmar) {
+    return;
+  }
+
+  await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE'
+  });
+
+  listarClientes();
 }
 
 listarClientes();

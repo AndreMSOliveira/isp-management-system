@@ -61,6 +61,16 @@ async function listarClientes(filtro = '') {
   });
 }
 
+function validarCPF(cpf) {
+  const cpfLimpo = cpf.replace(/\D/g, '');
+  return cpfLimpo.length === 11;
+}
+
+function validarTelefone(telefone) {
+  const telefoneLimpo = telefone.replace(/\D/g, '');
+  return telefoneLimpo.length === 11;
+}
+
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -71,6 +81,16 @@ form.addEventListener('submit', async (event) => {
         endereco: document.getElementById('endereco').value,
         status: document.getElementById('status').value
     };
+
+    if (!validarCPF(cliente.cpf)) {
+  alert('CPF inválido. Digite pelo menos 11 números.');
+  return;
+}
+
+if (!validarTelefone(cliente.telefone)) {
+  alert('Telefone inválido. Digite pelo menos 12 números.');
+  return;
+}
 
     if (clienteEditandoId) {
         await fetch(`${API_URL}/${clienteEditandoId}`, {
@@ -152,4 +172,30 @@ document.getElementById('btnProxima').addEventListener('click', async () => {
     paginaAtual++;
     listarClientes(busca.value);
   }
+});
+
+const inputCPF = document.getElementById('cpf');
+const inputTelefone = document.getElementById('telefone');
+
+inputCPF.addEventListener('input', () => {
+  let valor = inputCPF.value.replace(/\D/g, '');
+
+  valor = valor.slice(0, 11);
+
+  valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+  valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+  valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+  inputCPF.value = valor;
+});
+
+inputTelefone.addEventListener('input', () => {
+  let valor = inputTelefone.value.replace(/\D/g, '');
+
+  valor = valor.slice(0, 11);
+
+  valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
+  valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
+
+  inputTelefone.value = valor;
 });

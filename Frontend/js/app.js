@@ -1,37 +1,45 @@
 const API_URL = 'http://localhost:3000/clientes';
 
 let clienteEditandoId = null;
+let paginaAtual = 1;
+const clientesPorPagina = 5;
 
 const form = document.getElementById('clienteForm');
 const tabela = document.getElementById('clientesTabela');
 const busca = document.getElementById('busca');
 
 async function listarClientes(filtro = '') {
-    const resposta = await fetch(API_URL);
-    const clientes = await resposta.json();
+  const resposta = await fetch(API_URL);
+  const clientes = await resposta.json();
 
-    document.getElementById('totalClientes').textContent =
-        clientes.length;
+  const clientesFiltrados = clientes.filter(cliente =>
+    cliente.nome.toLowerCase().includes(filtro.toLowerCase())
+  );
 
-    document.getElementById('clientesAtivos').textContent =
-        clientes.filter(cliente =>
-            cliente.status === 'ATIVO'
-        ).length;
+  const totalPaginas = Math.ceil(clientesFiltrados.length / clientesPorPagina);
 
-    document.getElementById('clientesInativos').textContent =
-        clientes.filter(cliente =>
-            cliente.status === 'INATIVO'
-        ).length;
+  const inicio = (paginaAtual - 1) * clientesPorPagina;
+  const fim = inicio + clientesPorPagina;
 
-    const clientesFiltrados = clientes.filter(cliente =>
-        cliente.nome.toLowerCase().includes(filtro.toLowerCase())
-    );
-    tabela.innerHTML = '';
+  const clientesPaginados = clientesFiltrados.slice(inicio, fim);
 
-    clientesFiltrados.forEach((cliente) => {
-        const linha = document.createElement('tr');
+  document.getElementById('totalClientes').textContent = clientes.length;
 
-        linha.innerHTML = `
+  document.getElementById('clientesAtivos').textContent =
+    clientes.filter(cliente => cliente.status === 'ATIVO').length;
+
+  document.getElementById('clientesInativos').textContent =
+    clientes.filter(cliente => cliente.status === 'INATIVO').length;
+
+  document.getElementById('infoPagina').textContent =
+    `Página ${paginaAtual} de ${totalPaginas || 1}`;
+
+  tabela.innerHTML = '';
+
+  clientesPaginados.forEach((cliente) => {
+    const linha = document.createElement('tr');
+
+    linha.innerHTML = `
       <td>${cliente.id}</td>
       <td>${cliente.nome}</td>
       <td>${cliente.cpf}</td>
@@ -39,18 +47,18 @@ async function listarClientes(filtro = '') {
       <td>${cliente.endereco}</td>
       <td>${cliente.status}</td>
       <td>
-      <button onclick='editarCliente(${JSON.stringify(cliente)})'>
-        Editar
-      </button>
+        <button onclick='editarCliente(${JSON.stringify(cliente)})'>
+          Editar
+        </button>
 
-      <button class="btn-delete" onclick="excluirCliente(${cliente.id})">
-        Excluir
-      </button>
+        <button class="btn-delete" onclick="excluirCliente(${cliente.id})">
+          Excluir
+        </button>
       </td>
-        `;
+    `;
 
-        tabela.appendChild(linha);
-    });
+    tabela.appendChild(linha);
+  });
 }
 
 form.addEventListener('submit', async (event) => {
@@ -119,6 +127,29 @@ function editarCliente(cliente) {
 }
 
 busca.addEventListener('input', () => {
-    listarClientes(busca.value);
+  paginaAtual = 1;
+  listarClientes(busca.value);
 });
 
+document.getElementById('btnAnterior').addEventListener('click', () => {
+  if (paginaAtual > 1) {
+    paginaAtual--;
+    listarClientes(busca.value);
+  }
+});
+
+document.getElementById('btnProxima').addEventListener('click', async () => {
+  const resposta = await fetch(API_URL);
+  const clientes = await resposta.json();
+
+  const clientesFiltrados = clientes.filter(cliente =>
+    cliente.nome.toLowerCase().includes(busca.value.toLowerCase())
+  );
+
+  const totalPaginas = Math.ceil(clientesFiltrados.length / clientesPorPagina);
+
+  if (paginaAtual < totalPaginas) {
+    paginaAtual++;
+    listarClientes(busca.value);
+  }
+});

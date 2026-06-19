@@ -148,3 +148,16 @@ th {
 .inativos {
   border-left-color: #cc0000;
 }
+
+.paginacao {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+}
+
+.paginacao button {
+  width: auto;
+  padding: 10px 20px;
+}

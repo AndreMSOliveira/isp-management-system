@@ -8,65 +8,69 @@
 </head>
 
 <body>
-<div class="container">
+    <div class="container">
 
-  <div class="dashboard">
+        <div class="dashboard">
 
-    <div class="card-info total">
-      <h3>Total</h3>
-      <p id="totalClientes">0</p>
-    </div>
+            <div class="card-info total">
+                <h3>Total</h3>
+                <p id="totalClientes">0</p>
+            </div>
 
-    <div class="card-info ativos">
-      <h3>Ativos</h3>
-      <p id="clientesAtivos">0</p>
-    </div>
+            <div class="card-info ativos">
+                <h3>Ativos</h3>
+                <p id="clientesAtivos">0</p>
+            </div>
 
-    <div class="card-info inativos">
-      <h3>Inativos</h3>
-      <p id="clientesInativos">0</p>
-    </div>
+            <div class="card-info inativos">
+                <h3>Inativos</h3>
+                <p id="clientesInativos">0</p>
+            </div>
 
-  </div>
-
-</div>
-
-        <div class="card">
-            <form id="clienteForm">
-                <input type="text" id="nome" placeholder="Nome" required>
-                <input type="text" id="cpf" placeholder="CPF" required>
-                <input type="text" id="telefone" placeholder="Telefone" required>
-                <input type="text" id="endereco" placeholder="Endereço" required>
-
-                <select id="status">
-                    <option value="ATIVO">ATIVO</option>
-                    <option value="INATIVO">INATIVO</option>
-                </select>
-
-                <button type="submit">Cadastrar</button>
-            </form>
         </div>
 
-        <h2>Clientes cadastrados</h2>
+    </div>
 
-        <input type="text" id="busca" placeholder="Buscar cliente pelo nome...">
+    <div class="card">
+        <form id="clienteForm">
+            <input type="text" id="nome" placeholder="Nome" required>
+            <input type="text" id="cpf" placeholder="CPF" required>
+            <input type="text" id="telefone" placeholder="Telefone" required>
+            <input type="text" id="endereco" placeholder="Endereço" required>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Telefone</th>
-                    <th>Endereço</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
+            <select id="status">
+                <option value="ATIVO">ATIVO</option>
+                <option value="INATIVO">INATIVO</option>
+            </select>
 
-            <tbody id="clientesTabela"></tbody>
-        </table>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
 
+    <h2>Clientes cadastrados</h2>
+
+    <input type="text" id="busca" placeholder="Buscar cliente pelo nome...">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Endereço</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody id="clientesTabela"></tbody>
+    </table>
+    <div class="paginacao">
+        <button id="btnAnterior">Anterior</button>
+        <span id="infoPagina">Página 1</span>
+        <button id="btnProxima">Próxima</button>
+    </div>
     </div>
 
     <script src="./js/app.js"></script>
